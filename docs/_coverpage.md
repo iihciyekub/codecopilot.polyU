@@ -10,7 +10,7 @@
 
 
 
-![NodePing status](https://img.shields.io/nodeping/status/jkiwn052-ntpp-4lbb-8d45-ihew6d9ucoei?label=iihciyekub&logo=github)
+[![NodePing status](https://img.shields.io/nodeping/status/jkiwn052-ntpp-4lbb-8d45-ihew6d9ucoei?label=iihciyekub&logo=github)](https://iihciyekub.github.io/codecopilot.polyU/#/)
 
 
 

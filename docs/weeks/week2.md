@@ -27,9 +27,23 @@ key: `requests` `pyquery` `selenium` `cursor`
 
 > 安装支持库:
 - 打开 miniconda prompt 以命令行方式安装以下库
+
 - `pip install pandas -U`
+
 - `pip install pyquery -U`
+
 - `pip install selenium -U`
+
+  - `pip install webdriver_manager`
+
+  - ```python
+    from selenium import webdriver
+    from webdriver_manager.chrome import ChromeDriverManager
+    
+    driver = webdriver.Chrome(ChromeDriverManager().install())
+    ```
+
+    
 
 > ## case 1:  获取  [ Health and Safety Executive](https://www.hse.gov.uk/index.htm) 数据
 
@@ -104,7 +118,7 @@ blist --> csv:2. save
 > ## case 2:  获取   数据
 
 
-> ##  🤔 prompting 
+> ##  🤔 case1.prompting 
 
 !> 提醒: 以下内容是网络数据请求实现的prompting过程。
 以下是 prompting 过程。
@@ -115,52 +129,52 @@ blist --> csv:2. save
 
 ---
 
-!>  对话式编程。备注:以下内容在代码块中的是 prompt 内容，带有📝 是旁释
+!>  对话式编程。备注:以下内容在代码块中的是 prompt 内容，带有🟢 是旁释
 
-📝1 访问
+🟢1 访问
 ```txt
 请使用 PyQuery 库解析以下网址中的 table 标签，并将其转换为 Pandas DataFrame，并将其保存为名为 df 的变量.
 https://resources.hse.gov.uk/convictions-history/breach/breach_list.asp?PN=1&ST=B&EO=LIKE&SN=F&SF=DN&SV=&SO=DHD
 ```
 
-📝2 检查df 是否要目标网页数据一致 ,这个网站的数结构是多级索引的, 为方便取值先对df进行处理
+🟢2 检查df 是否要目标网页数据一致 ,这个网站的数结构是多级索引的, 为方便取值先对df进行处理
 
 ```txt
 DataFrame 变量 df 是多级索引的 ，请将第 0 层的 columns 索引删除。
 ```
 
 
-📝3 分析网页,开始获取a标签的文本与属性值
+🟢3 分析网页,开始获取a标签的文本与属性值
 
 ```txt
 获取 table 标签下的所有子级 a 标签, 并打印a 标签的文本值
 ```
 
-📝 4 修改代码
+🟢 4 修改代码
 
 ```
 修改代码, 当获取 a 标签文本时,判断是否在变量 df 的第一列中,如果是的话将其保留, 并打印出 a 标签的 href 属性值
 ```
 
- 📝5 这里查看代码时，发现href 没有加前缀，分析下网页网址结构后，需要添加的前缀是`https://resources.hse.gov.uk/convictions-history/breach/`
+ 🟢5 这里查看代码时，发现href 没有加前缀，分析下网页网址结构后，需要添加的前缀是`https://resources.hse.gov.uk/convictions-history/breach/`
 
 ```
 修改代码,将符合条件的 a 标签 href 属性加前缀 `https://resources.hse.gov.uk/convictions-history/breach/`
 ```
 
-📝6 测试一下这些超链接的正确性,如果没问题, 那将 用a标签文本作为key ,href属性值作为values 构建一个 python 字典, 
+🟢6 测试一下这些超链接的正确性,如果没问题, 那将 用a标签文本作为key ,href属性值作为values 构建一个 python 字典, 
 
 ```
 创建字典,href_dic, a 标签文本作为 key, a 标签 href 属性值作 value, 最后将 href_dic 转为命为 hrefdf 的 pd对象
 ```
 
-📝7 合并列, 对齐的名
+🟢7 合并列, 对齐的名
 
 ```
 代码内容增加,将 hrefdf 的第一列列名修改为 df 的第一列名,之后 df 与 hrefdf 按第一列列名 进行交集合并  
 ```
 
-📝8 由于该方法会经常被用到,所以在这里将这个方法封装成函数或方法, 全选代码,再对话
+🟢8 由于该方法会经常被用到,所以在这里将这个方法封装成函数或方法, 全选代码,再对话
 
 ```
 修改代码, 请将这段代码封装成名为 get_breachlist 的函数方法,   输入参数是 url ,返回结果是 merged_df
@@ -170,7 +184,7 @@ DataFrame 变量 df 是多级索引的 ，请将第 0 层的 columns 索引删�
 修改 增加一个方法执行时的异常情况判断, 如果解析时 table 没有返回值 或空 或异常, 则返回  None
 ```
 
-📝9 到此,我们已经完成对对给定 url 的网页数据请求,剩下的工作是构建 page url 就能用一个循环语句获取所有pages 的数据。首先交给chapGPT分析下page 网页的结构
+🟢9 到此,我们已经完成对对给定 url 的网页数据请求,剩下的工作是构建 page url 就能用一个循环语句获取所有pages 的数据。首先交给chapGPT分析下page 网页的结构
 
 ```🤔
 url = 'https://resources.hse.gov.uk/convictions-history/breach/breach_list.asp?PN=1&ST=B&EO=LIKE&SN=F&SF=DN&SV=&SO=DHD'
@@ -180,19 +194,19 @@ url = 'https://resources.hse.gov.uk/convictions-history/breach/breach_list.asp?P
 分析上面的规律, 创建一个函数生成对应的 url 字符串
 ```
 
-📝10  生成410个url，
+🟢10  生成410个url，
 
 ```
 使用 generate_url 方法 生成 410个网址 并且 保存在 urlist 数组中
 ```
 
-📝11  循环执行 get_breachlist 方法，直到结束。（串行获取速度慢）
+🟢11  循环执行 get_breachlist 方法，直到结束。（串行获取速度慢）
 
 ```
 遍历 urlist 数组, 执行 get_breachlist 方法,将返回值保存到 relist数组中
 ```
 
-📝12 下面我们改进代码,使用多线程进行的数据获取，先删去刚才的循环语句
+🟢12 下面我们改进代码,使用多线程进行的数据获取，先删去刚才的循环语句
 
 ```
 用多线程方法 启动 get_breachlist 方法,传入 urlist 中的 url直到urlist为空
@@ -202,7 +216,7 @@ url = 'https://resources.hse.gov.uk/convictions-history/breach/breach_list.asp?P
 修改代码, 保存返回结果时使用线程锁,当结果每增加50个时通知我修改代码, 保存返回结果时使用线程锁
 ```
 
-📝13 保存结果，到本地*.pkl
+🟢13 保存结果，到本地*.pkl
 
 ```
 将pandas 类型的变量 df ,保存为  breachlist 的pkl 文件
@@ -210,7 +224,7 @@ url = 'https://resources.hse.gov.uk/convictions-history/breach/breach_list.asp?P
 
 ---
 
-📝14 获取二级表，所有 case 对应的 `breach details` `details for case#` `Defendant details`  
+🟢14 获取二级表，所有 case 对应的 `breach details` `details for case#` `Defendant details`  
 
  ```
 用pandas 读取 目录下 breachlist.pkl文件
@@ -220,7 +234,7 @@ url = 'https://resources.hse.gov.uk/convictions-history/breach/breach_list.asp?P
 取出变量df的 列名为 href 的第一个元素 保存为变量 url
 ```
 
-📝15 这里开始试试内容更多的 prompt 
+🟢15 这里开始试试内容更多的 prompt 
 
 ```
 创建一个方法 get_dicdf,传入参数是 url: 1,用pyquery 解析url table 标签, 并将其转换为 Pandas DataFrame, 变量名为 tdf,  如果解析异常或失败时返回none 如果一切返回 变量 url 为key 与 变量 tdf  为value组成的的字典
@@ -245,10 +259,14 @@ url = 'https://resources.hse.gov.uk/convictions-history/breach/breach_list.asp?P
 将 combined_dict 通过pickle 本地序列化
 ```
 
-
-
-
-
+> ##  🤔 case2.prompting 
+🟢1 使用 selenium 时,以 chrome 为例, 需要更新 chrome driver 的最新版.
+```
+用到python 的 selenium时 需要 chrome driver 这个有什么库可以自动更新
+```
+```
+使用 selenium 登陆 以下网址, 给我10秒时间用于登陆,   之后你创建读取 与保存cookies 到本地目录的2个方法,    第一次时, 你将保存我的登陆 cookies信息,
+```
 
 
 
