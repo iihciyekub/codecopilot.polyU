@@ -13,12 +13,14 @@ key: `requests` `pyquery` `selenium` `cursor`
 - 自动化测试工具 selenium 请求动态网站数据；
 
 >  python 基础
+
 - 字典
 - 数组
 - 类
 - 函数与方法
 
 > html 标签
+
 -  F12 chrome ,浏览器调试器
 -  标签;
 -  标签属性;
@@ -47,26 +49,30 @@ key: `requests` `pyquery` `selenium` `cursor`
 
 > ## case 1:  获取  [ Health and Safety Executive](https://www.hse.gov.uk/index.htm) 数据
 
-!> 任务:  1）获取目标网页 [Breach list](https://resources.hse.gov.uk/convictions-history/breach/breach_list.asp?PN=1&ST=B&EO=LIKE&SN=F&SF=DN&SV=&SO=DHD) 下所有 pages 的 Breach list 表格数据（见下图Breach list）；2）从 Breach list 中解析出所有 Breach id 的超链接，并进一步获取该超链接的网页表格数据（见下图 Breach details）；3）对表格进一步解析得到 defendant details & case details 的超链接并获取次级表格数据。
+!> 任务:  
+
+- 1）获取目标网页 [Breach list](https://resources.hse.gov.uk/convictions-history/breach/breach_list.asp?PN=1&ST=B&EO=LIKE&SN=F&SF=DN&SV=&SO=DHD) 下所有 pages 的 Breach list 表格数据（见下图Breach list）；
+- 2）从 Breach list 中解析出所有 Breach id 的超链接，并进一步获取该超链接的网页表格数据（见下图 Breach details）；
+- 3）对表格进一步解析得到 defendant details & case details 的超链接并获取次级表格数据。
+
+!>  视屏:
 
 [B站 同步更新 P1: 静态网页数据请求](https://www.bilibili.com/video/BV1Jv4y1E7KQ/?spm_id_from=333.999.0.0)
 
-> 目标网页网址: 
+!> 目标网页网址: 
 
   https://resources.hse.gov.uk/convictions-history/breach/breach_list.asp?PN=1&ST=B&EO=LIKE&SN=F&SF=DN&SV=&SO=DHD 
 
 ![image-20230417121549418](week2.assets/image-20230417121549418.png)
 
 
-> 获取网站数据内容示图
+!> 获取网站数据内容示图
 
 ![qwqw.drawio](week2.assets/qwqw.drawio.png)
 
->  设计数据请求流程:
+!>  设计数据请求流程:
 ```mermaid
 stateDiagram-v2
-classDef csv font-style:italic,font-weight:bold,fill:white
-
     plist:page list
     blist:Case/Breach list
     state plist{
@@ -115,9 +121,12 @@ blist --> csv:2. save
 
 
 
-> ## case 2:  获取   数据
+> ## case 2: 获取动态加载的数据
 
-
+!> 任务:  
+- 1) 以chrom 为例,自动安装chrom driver;
+- 2) 利用selenium, 保存/加载本地 cookies;  
+- 3) 
 > ##  🤔 case1.prompting 
 
 !> 提醒: 以下内容是网络数据请求实现的prompting过程。
@@ -259,7 +268,9 @@ url = 'https://resources.hse.gov.uk/convictions-history/breach/breach_list.asp?P
 将 combined_dict 通过pickle 本地序列化
 ```
 
-> ##  🤔 case2.prompting 
+> ##  🤔 case2.prompting
+
+
 🟢1 使用 selenium 时,以 chrome 为例, 需要更新 chrome driver 的最新版.
 ```
 用到python 的 selenium时 需要 chrome driver 这个有什么库可以自动更新
