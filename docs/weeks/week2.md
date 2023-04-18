@@ -51,6 +51,8 @@ key: `requests` `pyquery` `selenium` `cursor`
 >  设计数据请求流程:
 ```mermaid
 stateDiagram-v2
+classDef csv font-style:italic,font-weight:bold,fill:white
+
     plist:page list
     blist:Case/Breach list
     state plist{
