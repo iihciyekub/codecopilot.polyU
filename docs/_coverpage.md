@@ -1,22 +1,20 @@
-<!-- 下面是图标 -->
 
 
-
-<!-- 下面是文本 -->
-
-# **HK PolyU workshop: code copilot**
+<font style=" font-size:50pt">HK PolyU workshop: code copilot</font >
 
 > AI 輔助編程工作坊分享會預計3-4周時間
 
 
 
-旨在通曉入門知識結合 AI 工具輔助編程
+通曉入門知識結合 AI 工具輔助編程
 
 
 
-@yongjian.Li 
+![NodePing status](https://img.shields.io/nodeping/status/jkiwn052-ntpp-4lbb-8d45-ihew6d9ucoei?label=iihciyekub&logo=github)
 
-2023/04/12
+
+
+![Relative date](https://img.shields.io/date/1681662237?color=%239033&label=last%20update%3A&logo=anchor)
 
 
 
