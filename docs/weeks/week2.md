@@ -1,4 +1,4 @@
-![Relative date](https://img.shields.io/date/1681798632?color=%239035&label=last%20update%3A&logo=anchor)
+ ![Relative date](https://img.shields.io/date/1682351141?color=%239035&label=last%20update%3A&logo=anchor)
 
 key: `requests` `pyquery` `selenium` `cursor`
 
@@ -73,8 +73,6 @@ key: `requests` `pyquery` `selenium` `cursor`
 !>  设计数据请求流程:
 ```mermaid
 stateDiagram-v2
-    plist:page list
-    blist:Case/Breach list
     state plist{
         p1:page 1
         p2:page 2
@@ -90,7 +88,7 @@ stateDiagram-v2
     C:Defendant datails
     B:Breach details
     D:Details for case
-    fun:fun()
+
     state fun{
         note left of E 
             Breach details.csv
@@ -106,15 +104,13 @@ stateDiagram-v2
         B --> E:4. save
     }
     E:save data
-      
     F: case #
-p3 --> blist:1.parse table
-b3 --> B:3. parse link
-E--> F:9. switch
-csv:all Breach list data
-note right of csv: all Breach list.csv
-blist --> csv:2. save
-
+    p3 --> blist:1.parse table
+    b3 --> B:3. parse link
+    E--> F:9. switch
+    csv:all Breach list data
+    note right of csv: all Breach list.csv
+    blist --> csv:2. save
 
 ```
 
@@ -125,14 +121,18 @@ blist --> csv:2. save
 
 !> 任务:  
 - 1) 以chrom 为例,自动安装chrom driver;
+
 - 2) 利用selenium, 保存/加载本地 cookies;  
-- 3) 
+
+- 3) ...未更新
+
+  
 > ##  🤔 case1.prompting 
 
 !> 提醒: 以下内容是网络数据请求实现的prompting过程。
 以下是 prompting 过程。
 
-将使用 `python` 库：`Pyqeury``pandas``thread`
+将使用 `python` 库：`requests` `Pyqeury` `pandas`
 
 代码编辑器: [cursor](https://www.cursor.so/)
 
@@ -140,9 +140,11 @@ blist --> csv:2. save
 
 !>  对话式编程。备注:以下内容在代码块中的是 prompt 内容，带有🟢 是旁释
 
+### prompting 
+
 🟢1 访问
 ```txt
-请使用 PyQuery 库解析以下网址中的 table 标签，并将其转换为 Pandas DataFrame，并将其保存为名为 df 的变量.
+请使用 requests, PyQuery 库解析以下网址中的 table 标签，并将其转换为 Pandas DataFrame，并将其保存为名为 df 的变量.
 https://resources.hse.gov.uk/convictions-history/breach/breach_list.asp?PN=1&ST=B&EO=LIKE&SN=F&SF=DN&SV=&SO=DHD
 ```
 
@@ -231,41 +233,282 @@ url = 'https://resources.hse.gov.uk/convictions-history/breach/breach_list.asp?P
 将pandas 类型的变量 df ,保存为  breachlist 的pkl 文件
 ```
 
----
+###  one prompt 
+
+!> 一个 prompt 总结: 第 1~-13 的步骤, 
+
+```txt
+第一个任务:
+编写一个函数名为 get_breachlist，该函数需要导入 requests、PyQuery、pandas等库。该函数的输入参数为url，实现以下内容：
+a) 使用 requests、PyQuery、pandas等库访问给定的 url，解析其中的 table标签，并将其转换为 Pandas DataFrame，将其保存为名为 df 的变量。如果 DataFrame 变量 df 是多级索引的，则删除第0层的 columns 索引。
+b) 创建 href_dic 字典，首先获取 table 标签下的所有子级 a 标签的文本值作为键，获取 a 标签的 href 属性值并加上前缀 https://resources.hse.gov.uk/convictions-history/breach/作为值。
+c) 将 href_dic 字典转换为 DataFrame，变量名为 href_df，字典的key值作为第一列, value 作为第二列, href_df 的第一列名要求与变量 df 的第一列一致.
+d) 将变量 df 与变量 href_df 按第一列对齐，进行交集合并，作为 get_breachlist 的返回值。
+e) 对函数进行修改，让其更加稳健。
+
+第二个任务:
+url = 'https://resources.hse.gov.uk/convictions-history/breach/breach_list.asp?PN=1&ST=B&EO=LIKE&SN=F&SF=DN&SV=&SO=DHD'
+url = 'https://resources.hse.gov.uk/convictions-history/breach/breach_list.asp?PN=2&ST=B&EO=LIKE&SN=F&SF=DN&SV=&SO=DHD'
+url = 'https://resources.hse.gov.uk/convictions-history/breach/breach_list.asp?PN=3&ST=B&EO=LIKE&SN=F&SF=DN&SV=&SO=DHD'
+根据上面已给出的 3个url ,分析规律并创建一个 generate_url 函数,实现生成对应的 url 字符串, 利用该方法生成 410 个网址并且 保存在 urlist 数组中.
+
+第三个任务:
+使用多线程方法,线程数量为100, 执行 get_breachlist 方法, 将数组 urlist 所有元素作为参数传入,注意传入 urlist 与保存返回值时都要用到线程锁,返回值每增加100个时, 输入提示
+
+当以上任务完成后,将所有获取到的返回值整理成一个dataframe,重置索引去重,排序操作后以 pickel 的格式保存至本地
+```
+
+!> 最终代码
+
+```python
+# 第一个任务
+import requests
+from pyquery import PyQuery as pq
+import pandas as pd
+
+def get_breachlist(url):
+    # 使用 requests 库访问给定的 url
+    response = requests.get(url)
+    # 使用 PyQuery 库解析其中的 table 标签
+    doc = pq(response.text)
+    table = doc('table')
+    # 将 table 标签转换为 Pandas DataFrame，将其保存为名为 df 的变量
+    df = pd.read_html(str(table))[0]
+    # 如果 DataFrame 变量 df 是多级索引的，则删除第0层的 columns 索引
+    if isinstance(df.columns, pd.MultiIndex):
+        df.columns = df.columns.droplevel(0)
+    # 创建 href_dic 字典，首先获取 table 标签下的所有子级 a 标签的文本值作为键，获取 a 标签的 href 属性值并加上前缀 https://resources.hse.gov.uk/convictions-history/breach/作为值
+    href_dic = {}
+    for a in table.find('a'):
+        href_dic[pq(a).text()] = 'https://resources.hse.gov.uk/convictions-history/breach/' + pq(a).attr('href')
+    # 将 href_dic 字典转换为 DataFrame，变量名为 href_df，字典的key值作为第一列, value 作为第二列, href_df 的第一列名要求与变量 df 的第一列一致
+    href_df = pd.DataFrame(list(href_dic.items()), columns=[df.columns[0], 'href'])
+    # 将变量 df 与变量 href_df 按第一列对齐，进行交集合并，作为 get_breachlist 的返回值
+    result = pd.merge(df, href_df, on=df.columns[0], how='inner')
+    return result
+
+# 对函数进行修改，让其更加稳健
+def get_breachlist(url):
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        print(e)
+        return None
+    doc = pq(response.text)
+    table = doc('table')
+    try:
+        df = pd.read_html(str(table))[0]
+    except ValueError:
+        print('No tables found')
+        return None
+    if isinstance(df.columns, pd.MultiIndex):
+        df.columns = df.columns.droplevel(0)
+    href_dic = {}
+    for a in table.find('a'):
+        href_dic[pq(a).text()] = 'https://resources.hse.gov.uk/convictions-history/breach/' + pq(a).attr('href')
+    href_df = pd.DataFrame(list(href_dic.items()), columns=[df.columns[0], 'href'])
+    result = pd.merge(df, href_df, on=df.columns[0], how='inner')
+    return result
+
+# 第二个任务
+def generate_url(page_num):
+    return f'https://resources.hse.gov.uk/convictions-history/breach/breach_list.asp?PN={page_num}&ST=B&EO=LIKE&SN=F&SF=DN&SV=&SO=DHD'
+
+urlist = [generate_url(i) for i in range(1, 411)]
+
+# 第三个任务
+import threading
+
+lock = threading.Lock()
+results = []
+
+def get_breachlist_thread(url):
+    result = get_breachlist(url)
+    with lock:
+        results.append(result)
+        if len(results) % 100 == 0:
+            print(f'{len(results)} urls processed')
+
+threads = []
+for url in urlist:
+    t = threading.Thread(target=get_breachlist_thread, args=(url,))
+    threads.append(t)
+    t.start()
+
+for t in threads:
+    t.join()
+
+# 将所有获取到的返回值整理成一个dataframe,重置索引去重,排序操作后以 pickel 的格式保存至本地
+df = pd.concat(results, ignore_index=True)
+df.drop_duplicates(inplace=True)
+df.sort_values(by=df.columns[0], inplace=True)
+df.reset_index(drop=True, inplace=True)
+df.to_pickle('breachlist.pkl')
+```
 
 🟢14 获取二级表，所有 case 对应的 `breach details` `details for case#` `Defendant details`  
 
- ```
-用pandas 读取 目录下 breachlist.pkl文件
- ```
+```
+task 1
+用pandas 读取本地目录下 breachlist.pkl 文件 ,保存为变量df
+取出 df 的最后一列,转为list类型 保存为 urlist
 
-```
-取出变量df的 列名为 href 的第一个元素 保存为变量 url
-```
+task 2
+创建一个 exp_excel 方法传入参数是 url,实现以下功能:
+1 先创建局部变量 dflist cdlist  2个空数组 
+2 再创建一个子方法 get_datails ,传入参数是 url: 实现以下内容
+a) 声明使用 局部变量 dflist  与 cdlist  
+b) 先用request , pyquery 获取 url 内容并解析 table 标签, 并将其转换为 DataFrame, 类型数据 并存入局部变量 dflist中
 
-🟢15 这里开始试试内容更多的 prompt 
+c) 另外, 我需要你遍历 table 标签下的所有子级 a 标签, 判断该标签的href  属性值是否包含 "case_details" 或 "defendant_details",如果是则将属性值的 ".." 替换为 "https://resources.hse.gov.uk/convictions-history", 
+d) 当a标签 href 属性值包含 "case_details" 或  "defendant_details" 的情况时判断是否已经在 cdlist  数组中, 如果已存在则跳过,如果不存在则先存入 cdlist  数组,再执行 get_datails 方法,;
+e) 如果不包含 "case_details" 或 "defendant_details" 字符的情况下, 跳过 ; 
+到此, get_datails 定义结束
 
-```
-创建一个方法 get_dicdf,传入参数是 url: 1,用pyquery 解析url table 标签, 并将其转换为 Pandas DataFrame, 变量名为 tdf,  如果解析异常或失败时返回none 如果一切返回 变量 url 为key 与 变量 tdf  为value组成的的字典
-```
+exp_excel  方法在上述的任何情况只要解析失败或异常时,请抛出异常返回0,  一切正常情况下 exp_excel  方法 的返回值是  dflist 元组
 
-```
-创建一个方法 get_datails ,传入参数是 url: 1,用pyquery 解析url table 标签, 并将其转换为 Pandas DataFrame, 变量名为 tdf,  2,获取 table 标签下的所有子级 a 标签的 href 属性值, 判断属性值 如果包含 "case_details" 或 "defendant_details" 字符,则分别对应的加上 "https://resources.hse.gov.uk/convictions-history/case/"  ,  "https://resources.hse.gov.uk/convictions-history/defendant/" 分别存入clist 与 dlist 数组中, 都不包含的情况下, 跳过 ; 3 上述的任何情况只要解析失败或异常时,请抛出异常返回none ,一切正常时, 请返回 url为key , tdf为value的字典, 以及 clist dlist
-```
-
-```
-调用get_dateils 方法, 将返回值分别等于 resdic , clist dlist, 
-如果 resdic 不等于 none 时, 
-先判断 clist 元素大于0, 如果是将clist map 到get_dateils 方法中 , 由于 get_dateils 有3个返回值, 在这里请只保留第一个返回值,并过滤得第一个返回值为 none的情况, 结果保存为变量 clist_res.
-相同的,  dlist也是 同样相同逻辑的操作,
 ```
 
 ```
-现在将resdic , clist_res  , clist_res 三个变量 中所有字典组合在一起
+代码内容新增加, 写一个多线程任务, 对 urlist 中所有元素执行 exp_excel 方法, 
+记录所有urlist 数组中元素执行的是否成功, 如果不成功能的重新传入执行,线程数量设定为50 , 
+方法返回结果要用线程锁, 保存至reslist 数组中, 线程成功执行每100条 打印一次通知
 ```
 
 ```
-将 combined_dict 通过pickle 本地序列化
+用pickle 的方法 保存 relist 变量到本地
+```
+
+!> 最终代码
+
+```python
+# Task 1
+import pandas as pd
+
+# Read the breachlist.pkl file and save it as a dataframe variable df
+df = pd.read_pickle('breachlist.pkl')
+
+# Get the last column of df and convert it to a list, save it as urlist
+urlist = df.iloc[:, -1].tolist()
+
+# Task 2
+import requests
+from pyquery import PyQuery as pq
+
+def exp_excel(url):
+    # Create two empty arrays dflist and cdlist
+    dflist = []
+    cdlist = []
+    
+    # Define the get_datails function
+    def get_datails(url):
+        # Use the dflist and cdlist variables defined in the parent function
+        nonlocal dflist, cdlist
+        
+        # Use requests and pyquery to get the content of the url and parse the table tag, then convert it to a DataFrame and save it to the dflist variable
+        try:
+            html = requests.get(url).text
+            doc = pq(html)
+            table = doc('table')
+            df = pd.read_html(str(table))[0]
+            dflist.append(df)
+        except:
+            raise Exception('Failed to parse table')
+        
+        # Traverse all child a tags under the table tag, and determine whether the href attribute value of the tag contains "case_details" or "defendant_details". If it does, replace ".." in the attribute value with "https://resources.hse.gov.uk/convictions-history"
+        for a in table.find('a'):
+            href = a.attrib.get('href')
+            if href and ('case_details' in href or 'defendant_details' in href):
+                href = href.replace('..', 'https://resources.hse.gov.uk/convictions-history')
+                
+                # If the href attribute value of the a tag contains "case_details" or "defendant_details", check whether it is already in the cdlist array. If it exists, skip it. If it does not exist, first save it to the cdlist array, and then execute the get_datails method.
+                if href not in cdlist:
+                    cdlist.append(href)
+                    get_datails(href)
+            else:
+                # If the href attribute value of the a tag does not contain "case_details" or "defendant_details", skip it.
+                continue
+    
+    # Call the get_datails function with the input url
+    try:
+        get_datails(url)
+    except:
+        raise Exception('Failed to get details')
+    
+    # Return the dflist tuple if everything is normal, or return 0 if an exception is thrown during execution
+    return tuple(dflist) if dflist else 0
+
+import threading
+
+# Define a lock variable
+lock = threading.Lock()
+
+# Define a function to execute the exp_excel method and save the result to the reslist array
+def execute_exp_excel(url):
+    # Use the global variables urlist and reslist
+    global urlist, reslist
+    
+    # Call the exp_excel method with the input url
+    result = exp_excel(url)
+    
+    # Use the lock variable to ensure thread safety when modifying the reslist array
+    with lock:
+        # If the result is not 0, append it to the reslist array
+        if result != 0:
+            reslist.append(result)
+        # If the result is 0, try to execute the exp_excel method again, up to 3 times
+        else:
+            for i in range(3):
+                result = exp_excel(url)
+                if result != 0:
+                    reslist.append(result)
+                    break
+    
+    # Print a notification every 100 successful executions
+    if len(reslist) % 100 == 0:
+        print('Successfully executed {} urls'.format(len(reslist)))
+
+# Define a function to create and start threads
+def create_and_start_threads():
+    # Use the global variables urlist and reslist
+    global urlist, reslist
+    
+    # Create a list to store threads
+    threads = []
+    
+    # Create and start threads for each url in urlist
+    for url in urlist:
+        # Create a thread and add it to the threads list
+        t = threading.Thread(target=execute_exp_excel, args=(url,))
+        threads.append(t)
+        
+        # If the number of threads in the threads list is equal to 50, start all threads and clear the threads list
+        if len(threads) == 50:
+            for thread in threads:
+                thread.start()
+            for thread in threads:
+                thread.join()
+            threads.clear()
+    
+    # If there are any remaining threads in the threads list, start and join them
+    if threads:
+        for thread in threads:
+            thread.start()
+        for thread in threads:
+            thread.join()
+
+# Create an empty reslist array
+reslist = []
+
+# Call the create_and_start_threads function to execute the exp_excel method for each url in urlist using multiple threads
+create_and_start_threads()
+
+import pickle
+
+# 用pickle.dump()方法将relist变量保存到本地
+with open('relist.pickle', 'wb') as f:
+    pickle.dump(reslist, f)
 ```
 
 > ##  🤔 case2.prompting

@@ -47,25 +47,22 @@
   
   - `pip`安裝 python 庫流程；
   
-    ```
-    pip install jupyter -U
-  pip install jupyter notebook-U
-    ```
-  
-    
+	```
+	pip install jupyter -U
+	pip install jupyter notebook-U
+	```
   
   - 安裝 Git, 配置 郵箱與用戶名
   
-    ```git
-    git --version
-    
-    git config --global user.email "you@example.com"
-    
-    git config --global user.name "Your Name"
-    ```
-  
+	```
+	git --version
+
+	git config --global user.email "you@example.com"
+
+	git config --global user.name "Your Name"
+	```
+
   - 安裝 VPN
-  
   - 重啟電腦, 
   
   - 通過 cmd 啟動python，啟動jupyternotebook；
