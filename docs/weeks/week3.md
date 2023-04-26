@@ -1,4 +1,4 @@
-![Relative date](https://img.shields.io/date/1682301693?color=%239035&label=last%20update%3A&logo=anchor)
+![Relative date](https://img.shields.io/date/1682473794?color=%239035&label=last%20update%3A&logo=anchor)
 key: `pandas` `numpy`  `cursor`
 
 # week3 (數據處理&分析主題)
@@ -11,7 +11,16 @@ key: `pandas` `numpy`  `cursor`
 - 複雜數據讀取，處理，及自動化處理；
 - 提供一些練習結合 AI 輔助工具解決任務需求
 
+!>  pandas 系统了解知识点(jupyter notebook) 
 
+- 基础 (文件读写,数据结构,基本函数,排序等)
+- 索引(单级索引,多级索引,索引设定等,去重,抽样等)
+- 分组(SAC , 分割/执行方法/组合过程)
+- 变形(透视表,哑变量因子化等)
+- 合并(append, assign,combine,update,concat,merge.join等)
+- 缺失数据处理
+- 文本数据
+- 时序数据
 
 !> 推荐 pandas 系统学习的资料
 
@@ -46,5 +55,17 @@ step.2
 4 填充k 列 空值为 Description
 5 重置索引值 
 6 设置 k 列为索引, 并对edf 进行转置,
+```
+
+step.3
+
+```
+对方法进行封装,循环调用方法,直至 reslist 数组处理完毕
+```
+
+setp.4
+
+```
+通过concat 的方法将返回值进行拼接,得到完整的数据表
 ```
 

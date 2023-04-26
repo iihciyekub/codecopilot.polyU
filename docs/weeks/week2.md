@@ -28,7 +28,7 @@ key: `requests` `pyquery` `selenium` `cursor`
 -  css 选择器;
 
 > 安装支持库:
-- 打开 miniconda prompt 以命令行方式安装以下库
+- 打开 miniconda promQpt 以命令行方式安装以下库
 
 - `pip install pandas -U`
 
@@ -522,6 +522,6 @@ with open('relist.pickle', 'wb') as f:
 使用 selenium 登陆 以下网址, 给我10秒时间用于登陆,   之后你创建读取 与保存cookies 到本地目录的2个方法,    第一次时, 你将保存我的登陆 cookies信息,
 ```
 
-
+(selenium 的待补充)
 
 
