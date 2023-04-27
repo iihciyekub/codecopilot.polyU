@@ -11,18 +11,10 @@ key: `pandas` `numpy`  `cursor`
 - 複雜數據讀取，處理，及自動化處理；
 - 提供一些練習結合 AI 輔助工具解決任務需求
 
-!>  pandas 系统了解知识点(jupyter notebook) 
-
-- 基础 (文件读写,数据结构,基本函数,排序等)
-- 索引(单级索引,多级索引,索引设定等,去重,抽样等)
-- 分组(SAC , 分割/执行方法/组合过程)
-- 变形(透视表,哑变量因子化等)
-- 合并(append, assign,combine,update,concat,merge.join等)
-- 缺失数据处理
-- 文本数据
-- 时序数据
-
-!> 推荐 pandas 系统学习的资料
+> [!TIP]
+>
+> 推荐 pandas 系统学习的资料:
+> http://joyfulpandas.datawhale.club/Content/index.html
 
 ```
 git clone https://github.com/iihciyekub/joyful-pandas

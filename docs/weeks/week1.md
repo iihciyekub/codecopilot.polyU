@@ -16,6 +16,17 @@
 - 結合 chatGPT 完成一個或多個對話式輔助編程的練習；
 - 總結 。
 
+
+<embed src="https://mynane.github.io/pdf.js/web/viewer.html?file=(JavaScript%20Promise迷你书(中文版))javascript-promise-book.pdf" height=800px; width=100%>
+
+
+```pdf
+
+```
+
+> [!DANGER]
+>
+
 > 收穫：
 
 - 通過以上內容的了解， 你已經具備結合 AI 工具實現編程的能力，儘管你可能是個python 語言初學者；
