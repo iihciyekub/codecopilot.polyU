@@ -1,51 +1,40 @@
- ![Relative date](https://img.shields.io/date/1682351141?color=%239035&label=last%20update%3A&logo=anchor)
+# workshop.w2 (网络数据收集主题)
+![Relative date](https://img.shields.io/date/1682351141?color=%239035&label=last%20update%3A&logo=anchor)
 
-key: `requests` `pyquery` `selenium` `cursor`
+> [!DANGER]  分享内容快速预览：
+> - chatGPT 对话场景下,自我学习以下内容
+> - python 基础回顾、完善、补充3 (语法;流程控制;逻辑处理;面向对象编程;面向函数编程;等基本概念)
+> - python 网络数据整理或收集 (`request`;`pyquery`;`selenium`)
+> - 结合 AI工具 完成，网站数据请求，数据响应获取；网页结构，标签解析等；
+> - 自动化测试工具 selenium 请求动态网站数据；
 
-> workshop.w2 (网络数据收集主题)
 
-
-> ##  分享内容快速预览：
-- chatGPT 对话场景下,自我学习以下内容
-- python 基础回顾、完善、补充3 (语法;流程控制;逻辑处理;面向对象编程;面向函数编程;等基本概念)
-- python 网络数据整理或收集 (`request`;`pyquery`;`selenium`)
-- 结合 AI工具 完成，网站数据请求，数据响应获取；网页结构，标签解析等；
-- 自动化测试工具 selenium 请求动态网站数据；
-
->  python 基础
-
-- 字典
-- 数组
-- 类
-- 函数与方法
-
-> html 标签
-
--  F12 chrome ,浏览器调试器
--  标签;
--  标签属性;
--  标签文本值;
--  css 选择器;
-
+> [!NOTE] python 基础
+>
+> - 字典
+> - 数组
+> - 类
+> - 函数与方法
+>
 > 安装支持库:
-- 打开 miniconda promQpt 以命令行方式安装以下库
+>
+> - 打开 miniconda promQpt 以命令行方式安装以下库
+>
+> - `pip install pandas -U`
+>
+> - `pip install pyquery -U`
+>
+> - `pip install selenium -U`
+>
+> html 标签
+>
+> -  F12 chrome ,浏览器调试器
+> -  标签;
+> -  标签属性;
+> -  标签文本值;
+> -  css 选择器;
 
-- `pip install pandas -U`
 
-- `pip install pyquery -U`
-
-- `pip install selenium -U`
-
-  - `pip install webdriver_manager`
-
-  - ```python
-    from selenium import webdriver
-    from webdriver_manager.chrome import ChromeDriverManager
-    
-    driver = webdriver.Chrome(ChromeDriverManager().install())
-    ```
-
-    
 
 > ## case 1:  获取  [ Health and Safety Executive](https://www.hse.gov.uk/index.htm) 数据
 

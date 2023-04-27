@@ -1,37 +1,27 @@
+# week 1 （基礎主題，下載安裝&配置）
 ![Relative date](https://img.shields.io/date/1681297799?color=%239035&label=last%20update%3A&logo=anchor)
 
 **Keys:** `chatGPT` `Python` `GitHub` `GitHub Copilot`  `Cursor` `Google Colaboratory`
-
-> # week 1 （基礎主題，下載安裝&配置）
-
-> 分享內容快速預覽：
-
-- 介紹 AI(chatGPT/github copilot/github copilot labs/cursor) copilot 輔助編程工作流程；
-- 安裝編程環境：python 或 miniconda；
-- 安裝編輯器工具：vscode 及相關擴展包；
-- 解決所有安裝或配置時出現的問題；
-- 介紹編程相關術語（chatGPT對話需要， prompting）
-- python 基礎1 (語言;流程控制;邏輯處理;面向對象編程;面向函數編程;等基本概念)
-- Hello, World  本地 cmd/jupyter/ coding 練習；
-- 結合 chatGPT 完成一個或多個對話式輔助編程的練習；
-- 總結 。
+> [!DANGER] 分享內容快速預覽：
+> - 介紹 AI(chatGPT/github copilot/github copilot labs/cursor) copilot 輔助編程工作流程；
+> - 安裝編程環境：python 或 miniconda；
+> - 安裝編輯器工具：vscode 及相關擴展包；
+> - 解決所有安裝或配置時出現的問題；
+> - 介紹編程相關術語（chatGPT對話需要， prompting）
+> - python 基礎1 (語言;流程控制;邏輯處理;面向對象編程;面向函數編程;等基本概念)
+> - Hello, World  本地 cmd/jupyter/ coding 練習；
+> - 結合 chatGPT 完成一個或多個對話式輔助編程的練習；
+> - 總結 。
 
 
-<embed src="https://mynane.github.io/pdf.js/web/viewer.html?file=(JavaScript%20Promise迷你书(中文版))javascript-promise-book.pdf" height=800px; width=100%>
 
-
-```pdf
-
-```
-
-> [!DANGER]
+> [!NOTE]收穫：
 >
+> - 通過以上內容的了解， 你已經具備結合 AI 工具實現編程的能力，儘管你可能是個python 語言初學者；
+> - 倘若你熟悉 python 語言及其它語言特性，那麼以上內容可能會幫助你提升編程效率；
+> - 你的筆記本或電腦 python 編程環境已經配置完畢，可以隨時創作python 項目； 
 
-> 收穫：
 
-- 通過以上內容的了解， 你已經具備結合 AI 工具實現編程的能力，儘管你可能是個python 語言初學者；
-- 倘若你熟悉 python 語言及其它語言特性，那麼以上內容可能會幫助你提升編程效率；
-- 你的筆記本或電腦 python 編程環境已經配置完畢，可以隨時創作python 項目； 
 
 >內容相關細節: 
 

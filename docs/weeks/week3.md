@@ -1,24 +1,23 @@
-![Relative date](https://img.shields.io/date/1682473794?color=%239035&label=last%20update%3A&logo=anchor)
-key: `pandas` `numpy`  `cursor`
-
 # week3 (數據處理&分析主題)
+![Relative date](https://img.shields.io/date/1682473794?color=%239035&label=last%20update%3A&logo=anchor)
+>[!DANGER] 分享內容快速預覽：
+>
+>- chatGPT 對話場景下,自我學習以下內容
+>- python 基礎回顧、完善、補充3 (語法;流程控制;邏輯處理;面向對象編程;面向函數編程;等基本概念)
+>- python numpy， pandas 庫常用命令；
+>- 複雜數據讀取，處理，及自動化處理；
+>- 提供一些練習結合 AI 輔助工具解決任務需求
 
-> workshop.w3 分享內容快速預覽：
 
-- chatGPT 對話場景下,自我學習以下內容
-- python 基礎回顧、完善、補充3 (語法;流程控制;邏輯處理;面向對象編程;面向函數編程;等基本概念)
-- python numpy， pandas 庫常用命令；
-- 複雜數據讀取，處理，及自動化處理；
-- 提供一些練習結合 AI 輔助工具解決任務需求
 
 > [!TIP]
 >
-> 推荐 pandas 系统学习的资料:
+> 系统学习 pandas 的资料:
 > http://joyfulpandas.datawhale.club/Content/index.html
-
-```
-git clone https://github.com/iihciyekub/joyful-pandas
-```
+>
+> 相应 GitHub 项目
+>
+> `git clone https://github.com/iihciyekub/joyful-pandas`
 
 
 
