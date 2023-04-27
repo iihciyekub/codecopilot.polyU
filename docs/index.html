@@ -28,7 +28,7 @@
 
 <body>
   <nav>
-    <a href="#/" id = "projectname"></a>
+    <a href="#/" id="projectname"></a>
     <a href="#/README.md"><i class="fa-solid fa-house"></i> 介绍</a>
     <a id='github_url'><i class="fa-brands fa-github"></i> GitHub</a>
     <a id='icon_url'><i class="fa-solid fa-link"></i> fontawesome</a>
@@ -53,6 +53,16 @@
     var icon_url = 'https://fontawesome.com/icons?d=gallery&m=free';
     document.getElementById('icon_url').href = icon_url
 
+    function tocode(code) {
+      code = code.trim();
+      if (code.indexOf("github.com/") != -1) {
+        code = "https://mozilla.github.io/pdf.js/web/viewer.html?file=" + code;
+        code = code.replace("github.com/", "raw.githubusercontent.com/").replace("/blob", "");
+      } else {
+        code = `https://mozilla.github.io/pdf.js/web/viewer.html?file=${github_url.replace("github.com/", "raw.githubusercontent.com/")}/main/${code}`
+      }
+      return code
+    }
   </script>
   <script>
     // mermaid
@@ -86,6 +96,7 @@
             if (lang === 'drawio') {
               if (window.drawioConverter) {
                 console.log('drawio 转化中')
+                console.log(code)
                 return window.drawioConverter(code)
               } else {
                 return `<div class='drawio-code'>${code}</div>`
@@ -95,13 +106,7 @@
                 '<div class="mermaid">' + mermaid.render('mermaid-svg-' + num++, code) + "</div>"
               );
             } else if (lang === 'pdf') {
-              code = code.trim();
-              if (code.indexOf("github.com/") != -1) {
-                code = "https://mozilla.github.io/pdf.js/web/viewer.html?file=" + code;
-                code = code.replace("github.com/", "raw.githubusercontent.com/").replace("/blob", "");
-              }else{
-                code = `https://mozilla.github.io/pdf.js/web/viewer.html?file=${github_url.replace("github.com/", "raw.githubusercontent.com/")}/main/${code}`
-              }
+              code = tocode(code);
 
               var pdf_renderer = function (code, lang, verify) {
                 function unique_id_generator() {
@@ -228,6 +233,7 @@
   <script src="https://unpkg.com/docsify-plugin-flexible-alerts"></script>
 
   <!-- drawio [filename](https://cdn.jsdelivr.net/npm/docsify-drawio/test.drawio ':include :type=code') -->
+  <!-- [filename](https://raw.githubusercontent.com/iihciyekub/codecopilot.polyU/main/docs/drawio/br.drawio ':include :type=xml') -->
   <script src="https://cdn.jsdelivr.net/npm/docsify-drawio/viewer.min.js"></script>
   <script src='https://cdn.jsdelivr.net/npm/docsify-drawio/drawio.js'></script>
 </body>
