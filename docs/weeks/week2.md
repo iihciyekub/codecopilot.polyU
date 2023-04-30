@@ -1,4 +1,4 @@
-# workshop.w2 (网络数据收集主题)
+# week2 (网络数据收集主题)
 ![Relative date](https://img.shields.io/date/1682351141?color=%239035&label=last%20update%3A&logo=anchor)
 
 > [!DANGER]  分享内容快速预览：
