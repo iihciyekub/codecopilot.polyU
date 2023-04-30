@@ -67,9 +67,9 @@
   <script>
     // mermaid
     var num = 0;
+    // 计数器
+    var codenum = 0;
     mermaid.initialize({ startOnLoad: false });
-
-
     //core
     window.$docsify = {
       // name: `<i class="fa-solid fa-code"></i> ${short_name}`,
@@ -92,8 +92,161 @@
       markdown: {
         renderer: {
           code: function (code, lang) {
+            if (lang === '') {
 
-            if (lang === 'drawio') {
+              // 先判断变量 codenum 是否变量类型为字符串
+              if (typeof codenum == 'string') {
+                //再判断变量codenum 所有字符是否数字字符
+                if (codenum.match(/^\d+$/)) {
+                  // 将codenum 转换成数字
+                  codenum = parseInt(codenum)
+                } else {
+                  // 如果codenum 不是数字字符，那么将codenum 赋值为0
+                  codenum = 0;
+                }
+              }
+
+              codenum += 1;
+              //将code 的所有\n 替换成<br>
+              var comment = '';
+              var text = '';
+              //使用用正则表达式匹配变量code #init 后面跟着0到3个数字
+              var reg = /#init\{(.*?)\}/;
+              if (reg.test(code)) {
+                // 将匹配到的结果取出来
+                codenum = code.match(reg)[1];
+
+                // 将匹配到的结果替换成空
+                code = code.replace(reg, '')
+              }
+
+              split_t = '#end'
+              code = code.trim("\n")
+              // 判断 #--# 是否在code 字符中
+              if (code.indexOf(split_t) != -1) {
+                // 说明有注释
+                comment = code.split(split_t)[0];
+                comment = comment.replace(/\n/g, '<br>')
+
+                text = code.split(split_t)[1];
+                text = text.trim("\n")
+                text = text.replace(/\n/g, '<br>')
+              } else {
+                text = code.replace(/\n/g, '<br>')
+              }
+              var display = 'none'
+              var ishow = '0pt'
+              if (comment != "") {
+                display = 'block'
+                ishow = '0pt'
+              }
+
+
+              var commentcode = `
+<div style="display: flex;">
+  <div style=" width: 5%; height: auto;  border: 0pt solid #fffff; border-radius: 10px; background-color: #FFFFFF; font-weight: none; display: flex; align-items: center; justify-content: center;">
+    <div  style="width: 0.4mm;
+      height: 1em ;
+      background-color: #a3a3a3;
+      border-radius: 2px;
+      border-top-right-radius: 0px;
+      border-top-left-radius: 0px; "></div>
+  </div>
+  <div style="font-size: 12px; width: 95%; height: auto; padding: 5pt;"></div>
+</div>
+
+<div style="display: flex;">
+    <div style=" width: 5%; height: auto;  font-weight: none; display: flex; align-items: center; justify-content: center;">
+        <i class="fa-solid fa-code-commit fa-lg" style="color: #737578;"></i>
+    </div>
+    <div
+        style="font-size: 12px; 
+        width: 10%; 
+        height: auto; 
+        padding: 5pt; 
+        border-top-left-radius: 6px;
+        background-color: #F6F8FA;
+        border-left: 1pt solid  #c3c3c3;
+        border-right: 1pt solid  #c3c3c3;
+        border-top: 1pt solid  #c3c3c3;
+        text-align: center;
+        display: flex; 
+        align-items: center; 
+        justify-content: center;
+        "
+        onclick='copyText()'>
+        <button id = 'copycode'  class="fa-regular fa-clone fa-lg" style="color: #737578; " onclick='copyText()'></button><a> copy it</a>
+    </div>
+    <div
+        style="font-size: 12px; 
+        width:3%; 
+        height: auto; 
+        padding: 5pt; 
+        background-color: #F6F8FA;
+        border: 1pt solid  #c3c3c3;
+        border-left: 0pt;
+        border-right: 0pt;
+        text-align: center;
+        display: flex; 
+        align-items: right; 
+        justify-content: center;
+        ">
+        <i class="fa-solid fa-user-pen fa-lg" style="color: #737578;"></i> 
+    </div>
+    <div
+        style="font-size: 12px; 
+        width: 82%; 
+        height: auto; 
+        padding: 5pt; 
+        border-top-right-radius: 6px ;
+        background-color: #F6F8FA;
+        border: 1pt solid #c3c3c3; 
+        border-left: 0pt solid  #c9c9c9;
+        ">
+        <a>step.${codenum}</a> ${comment} 
+    </div>
+</div>
+`
+
+              var textcode = `
+<div style="display: flex;">
+  <div style=" width: 5%; border: 0pt solid #fffff; border-radius: 10px; background-color: #FFFFFF; font-weight: none; display: flex; align-items: top; justify-content: center;">
+        <div
+          style="width:  0.4mm;
+          height: auto ;
+          background-color: #a3a3a3;
+          border-radius: 0.9px;
+          border-bottom-left-radius: 0px;
+          border-bottom-right-radius: 0px;
+          ">
+        </div>
+    </div>
+    <div id='iprompt';
+        style="font-size: 12px;
+        line-height: 15pt;
+        width: 95%; 
+        height: aut; 
+        padding: 10pt; 
+        border-left: 1pt solid  #c3c3c3;
+        border-right: 1pt solid #c3c3c3;
+        border-bottom: 1pt solid #c3c3c3;
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
+        background-color: #FeFeFe;
+        ">
+        ${text}
+    </div>
+</div>
+
+              `
+              output = `
+<div id = 'copyprompt'>
+${commentcode}
+${textcode}
+</div>
+`
+              return output
+            } else if (lang === 'drawio') {
               if (window.drawioConverter) {
                 console.log('drawio 转化中')
                 console.log(code)
@@ -101,13 +254,13 @@
               } else {
                 return `<div class='drawio-code'>${code}</div>`
               }
+              // mermaid
             } else if (lang === 'mermaid') {
               return (
                 '<div class="mermaid">' + mermaid.render('mermaid-svg-' + num++, code) + "</div>"
               );
             } else if (lang === 'pdf') {
               code = tocode(code);
-
               var pdf_renderer = function (code, lang, verify) {
                 function unique_id_generator() {
                   function rand_gen() {
@@ -143,6 +296,7 @@
             }
           }
         }
+
       },
       // <!-- 搜索框 -->
       search: {
@@ -182,6 +336,44 @@
 
     }
   </script>
+
+  <script>
+
+    function copyText() {
+      var currentElement = document.elementFromPoint(event.clientX, event.clientY);
+      while (currentElement.id != 'copyprompt') {
+        currentElement = currentElement.parentNode;
+      }
+      var text = currentElement.querySelector('div#iprompt').innerText;
+      navigator.clipboard.writeText(text).then(function () {
+        // console.log('Async: Copying to clipboard was successful!');
+      }, function (err) {
+        // console.error('Async: Could not copy text: ', err);
+      });
+      // 创建提示框元素，显示 1 秒后移除
+      const tooltip = document.createElement('div');
+      tooltip.innerText = '复制完成';
+      tooltip.style.position = 'fixed';
+      tooltip.style.top = '50%';
+      tooltip.style.left = '50%';
+      tooltip.style.transform = 'translate(-50%, -50%)';
+      tooltip.style.background = 'rgba(0, 0, 0, 0.8)';
+      tooltip.style.color = '#fff';
+      tooltip.style.padding = '10px';
+      tooltip.style.borderRadius = '5px';
+      tooltip.style.transition = 'opacity 0.5s';
+      document.body.appendChild(tooltip);
+
+      setTimeout(() => {
+        tooltip.style.opacity = 0;
+        setTimeout(() => {
+          document.body.removeChild(tooltip);
+        }, 500);
+      }, 200);
+    }
+
+  </script>
+
   <!-- Docsify v4 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
 
@@ -215,7 +407,6 @@
   <script src="//unpkg.com/docsify-count/dist/countable.js"></script>
 
   <!-- 代码高亮  https://cdn.jsdelivr.net/npm/prismjs@1/components/ -->
-
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
   <!-- <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-cmake.min.js"></script> -->
