@@ -1,6 +1,6 @@
 # week4 (問題分享與討論)
 
-![Relative date](https://img.shields.io/date/1682610044?color=%239035&label=last%20update%3A&logo=anchor)
+![Relative date](https://img.shields.io/date/1682854015?color=%239035&label=last%20update%3A&logo=anchor)
 
 >[!DANGER] 分享內容快速預覽：
 >
@@ -29,6 +29,11 @@
 
 
 [filename](https://raw.githubusercontent.com/iihciyekub/codecopilot.polyU/main/docs/drawio/dataFL1.drawio ':include :type=xml')
+
+
+```pdf
+docs/pdf/dataFL1.pdf
+```
 
 
 ```
