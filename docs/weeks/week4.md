@@ -26,12 +26,12 @@
 > - 再次封装方法. 输入是 pdf,  输出结果是 pdf 的分析结果;
 > - 循环对所有pdf 进行同样的操作, 再合并最终结果
 
-```pdf
-docs/pdf/dataFL1.pdf
-```
+
+
+[filename](https://raw.githubusercontent.com/iihciyekub/codecopilot.polyU/main/docs/drawio/dataFL1.drawio ':include :type=xml')
+
 
 ```
-
 用pandas 读取本项目根目录下的 wording.xlsx ,它有两个sheet 保存为 df1  ,df2, 加载数据时, 忽略列名
 1. 对 df1  所有列合并为一列, 列为sheet1_term 
 2,全部转小写,
