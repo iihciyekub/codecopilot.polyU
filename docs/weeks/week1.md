@@ -2,7 +2,8 @@
 ![Relative date](https://img.shields.io/date/1681297799?color=%239035&label=last%20update%3A&logo=anchor)
 
 **Keys:** `chatGPT` `Python` `GitHub` `GitHub Copilot`  `Cursor` `Google Colaboratory`
-> [!DANGER] 分享內容快速預覽：
+> [!DANGER] **分享內容快速預覽**
+>
 > - 介紹 AI(chatGPT/github copilot/github copilot labs/cursor) copilot 輔助編程工作流程；
 > - 安裝編程環境：python 或 miniconda；
 > - 安裝編輯器工具：vscode 及相關擴展包；
@@ -16,7 +17,7 @@
 
 
 
-> [!NOTE]收穫：
+> [!NOTE] **收穫**
 >
 > - 通過以上內容的了解， 你已經具備結合 AI 工具實現編程的能力，儘管你可能是個python 語言初學者；
 > - 倘若你熟悉 python 語言及其它語言特性，那麼以上內容可能會幫助你提升編程效率；
@@ -49,21 +50,37 @@
   
   - `pip`安裝 python 庫流程；
   
-	```
-	pip install jupyter -U
-	pip install jupyter notebook-U
-	```
+	  ```
+	  #init{install python lib}
+	  pip install jupyter -U
+	  ```
   
-  - 安裝 Git, 配置 郵箱與用戶名
+    ```
+    #init{install python lib}
+	  pip install jupyter notebook-U
+	  ```
+
+	  
+
+	
+	
+- 安裝 Git, 配置 郵箱與用戶名
   
-	```
-	git --version
-
-	git config --global user.email "you@example.com"
-
-	git config --global user.name "Your Name"
-	```
-
+    ```
+    查看 git 版本#end
+    git --version
+    ```
+  
+    ```
+    设置 git 邮箱#end
+    git config --global user.email "you@example.com"
+    ```
+  
+    ```
+    设置 git 用户名#end
+    git config --global user.name "Your Name"
+    ```
+  
   - 安裝 VPN
   - 重啟電腦, 
   

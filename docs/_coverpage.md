@@ -8,11 +8,7 @@
 
 <font style="color:#a5a5a5">通曉入門知識結合 AI 工具輔助編程 </font>
 
-![Relative date](https://img.shields.io/date/1681662237?color=%239033&label=last%20update%3A&logo=anchor)
-
-
-
-
+![Relative date](https://img.shields.io/date/1682854015?color=%239033&label=last%20update%3A&logo=anchor)
 
 <!-- 下面的内容会渲染成按钮，[]中是按钮文本，()中是点击按钮跳转的链接 -->
 

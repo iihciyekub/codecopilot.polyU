@@ -1,7 +1,8 @@
 # week2 (网络数据收集主题)
 ![Relative date](https://img.shields.io/date/1682351141?color=%239035&label=last%20update%3A&logo=anchor)
 
-> [!DANGER]  分享内容快速预览：
+> [!DANGER]  **分享内容快速预览**：
+>
 > - chatGPT 对话场景下,自我学习以下内容
 > - python 基础回顾、完善、补充3 (语法;流程控制;逻辑处理;面向对象编程;面向函数编程;等基本概念)
 > - python 网络数据整理或收集 (`request`;`pyquery`;`selenium`)
@@ -9,24 +10,33 @@
 > - 自动化测试工具 selenium 请求动态网站数据；
 
 
-> [!NOTE] python 基础
+> [!NOTE] **python 基础**
 >
 > - 字典
 > - 数组
 > - 类
 > - 函数与方法
 >
-> 安装支持库:
+> **安装支持库**
 >
 > - 打开 miniconda promQpt 以命令行方式安装以下库
 >
-> - `pip install pandas -U`
+>   ```
+>   #init{python lib}
+>   pip install pandas -U
+>   ```
 >
-> - `pip install pyquery -U`
+>   ```
+>   #init{python lib}
+>   pip install pyquery -U
+>   ```
 >
-> - `pip install selenium -U`
+>   ```
+>   #init{python lib}
+>   pip install selenium -U
+>   ```
 >
-> html 标签
+> **html 标签**
 >
 > -  F12 chrome ,浏览器调试器
 > -  标签;
@@ -60,6 +70,8 @@
 ![qwqw.drawio](week2.assets/qwqw.drawio.png)
 
 !>  设计数据请求流程:
+
+
 ```mermaid
 stateDiagram-v2
     state plist{
@@ -100,7 +112,6 @@ stateDiagram-v2
     csv:all Breach list data
     note right of csv: all Breach list.csv
     blist --> csv:2. save
-
 ```
 
 
@@ -118,17 +129,8 @@ stateDiagram-v2
   
 > ##  🤔 case1.prompting 
 
-!> 提醒: 以下内容是网络数据请求实现的prompting过程。
-以下是 prompting 过程。
-
-将使用 `python` 库：`requests` `Pyqeury` `pandas`
-
+>[!TIP] 将使用 `python` 库：`requests` `Pyqeury` `pandas`
 代码编辑器: [cursor](https://www.cursor.so/)
-
----
-
-!>  对话式编程。备注:以下内容在代码块中的是 prompt 内容，带有🟢 是旁释
-
 ### prompting 
 
 ```
