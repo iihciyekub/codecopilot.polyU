@@ -31,82 +31,105 @@
 [filename](https://raw.githubusercontent.com/iihciyekub/codecopilot.polyU/main/docs/drawio/dataFL1.drawio ':include :type=xml')
 
 
+
+> [!TIP]  1) 读取 wroding
+
+
 ```
-用pandas 读取本项目根目录下的 wording.xlsx ,它有两个sheet 保存为 df1  ,df2, 加载数据时, 忽略列名
-1. 对 df1  所有列合并为一列, 列为sheet1_term 
-2,全部转小写,
-3 按值排序
-4 去空值去nan值,去重复值,
+#init{1}
+用pandas 读取本项目根目录下的 wording.xlsx ,它有两个sheet 保存为 df1 ,df2, 加载数据时, 忽略列名
+对变量 df1 , df2 分别进行以下操作
+1 操作所有列合并为一列, 列为 sheet_序号_term
+2 列元素转小写
+3 去空值去nan值,去重复值,
+4 按值排序
 5.最后重置索引
-6,转为 dataframe 类型
-df2 也是相同的操作
+6 转为 dataframe 类型
+```
+<br>
+
+> [!TIP]  2) 获取目录文件夹下所有pdf 文件的路径作为 pdflsit, 以其中一个元素为例,创建方法
+
+```
+遍历当前相对目录下, orgdata 文件夹中 包含.pdf 后缀的文件相对路径, 并保存到 pdflist 数组中
+```
+
+
+```
+取出变量 df1 的第一列的第一个元素作为变量 term 的值,
+取出数组 pdflist 的第一个元素作为变量 pdf 的值
 ```
 
 ```
-遍历项目根目录下 orgdata 文件夹中 包含pdf的文件名, 将其加字符前缀 "orgdata/" 保存到 pdflist 数组中
+如果不了解哪些库可以处理 pdf 文件,可以在 coding 前与chatGPT 对话学习#end
+用 PyMuPDF 库读取变量 pdf
+1 读取文件将所有文本拼接成字符变量 alltext
+2 对变量 alltext 用空格进行分割得到数组 textlist
+3 对数组 textlist 所有元素字符字母转小写,得到数组 lowtextlist
+4 对数组 textlist 去除空格,空值后,统计 textlist 的元素数量, 得到 变量 num_of_pdftext
 ```
+<br>
 
-
-```
-取出df1 的第一个元素变量名是 term, 取出pdflist的第一个元素为变量名是 pdf
-```
-
-```
-用PyMuPDF 库读取变量 pdf 
-1 读取文件将所有文本拼到一起,保存为变量 alltext,
-2,对 alltext 用空格进行分割得到数组 textlist ;
-3,textlist 所有元素字符字母转小写,得到数组 lowtextlist 
-```
+> [!TIP]  3) 以处理  wording  数据表中的其中一个关键词为例, 构建方法
 
 ```
-定义函数 getcount，输入参数为 term 和 lowtextlist，
-0 初始化变量 num 为0,  令num对 变量term 在 lowtextlist 中出现的次数, 
-1 初始化变量 fb10_num 为0,  
-2,初始化变量 fbtext 为 none ;
-3,如果 num 是大于0的, 则取出  term 所在的索引位置,左边界-10, 右边界+10 切片数组, 保存为 fbtext,
-4, 当 变量 fbtext 不是 none 时, 遍历全局变量 df2['trem'] 的所有元素, 
-将它们出现在 fbtext 的总次数保存到变量 fb10_num 中,,
-5.返回值为 num 与 fbtext ,fb10_num 
+定义函数 getcount，输入参数为 term 
+
+1 初始化变量 count_term 的值为 0
+2 初始化变量 term_fb10 的值为 空数组
+3 初始化变量 count_term2 为 0 
+4 遍历全局变量 lowtextlist, 执行以下操作,
+a) 如果元素等于变量 term时, count_term 递增1 , 并取出 lowtextlist 的切片数组,边界中当前索引值左右偏移10个元素,结果保存为临时变量 fb10 , 将变量 fb10 用空格拼接成字符串,添加到数组 term_fb10 中,   遍历临时变量 fb10 的所有元素, 是否出现在全局变量 df2 的第一列的元素中,如果为真,则 count_term2 递增1,
+b) 如果元素不等于变量 term时, 则不作处理,
+5 将 term_fb10 数组用换行符进行拼接;
+返回值为, count_term ,term_fb10 , count_term2 
 ```
 
 ```
-对变量df1 的 term 列, 使用 apply 方法 执行getcount ,保留第一个返回值,列名为 '# of sheet1_term" ,
-第二个返回值 保存到df1 的 'sheet1_termfb10 列中,
-第三个返回 保存到 '# of sheet2_term_in_sheet1_termfb10'
+代码增加
+对变量df1的第一列应用  apply 方法 , 输入参数是 getcount ,
+三个返回值分别保存为列名
+# of sheet1_term
+sheet1_termfb10
+# of sheet2_term_in_sheet1_termfb10
 ```
 
 ```
-对变量df2 的 term 列, 使用 apply 方法 执行getcount
-只需要保留第一个返回值,列名为 '# of sheet2_term"
-其它不要
+代码增加 
+对变量df2 的第一列应用  apply 方法 , 输入参数是 getcount ,
+但只需要保留第一个返回值,列名为 '# of sheet2_term"
+其它返回值不要
+```
+<br>
+
+> [!TIP]  4)  将结果转 dataframe 作为 output 的结果
+
+```
+对 df1 列名为 '# of sheet1_term'  '# of sheet2_term_in_sheet1_termfb10' 以及 df2 列名 '# of sheet2_term' 分别求和, 并保存为变量名 a,b,c
 ```
 
 ```
-创建字典, resdic
-1,key 名为 file ,值为  pdf
-2,key 名为 "total # of sheet1_term, 
-值是 df1 '# of sheet1_term'这一列的求和值
-3,key 名为 "total # of sheet2_term_in_sheet1_termfb10" 
-值是 df1 '# of sheet2_term_in_sheet1_termfb10' 这一列的求和值
-4,key 名为 total # of sheet2_term, 
-值是 df2 '# of sheet2_term'这一列的求和值
-5,key 名为 "total # of pdf" 值为 lowtextlist 数组的长度
+代码增加, 将变量 pdf, a, b, c,num_of_pdftex 的值转dataframe 类型的变量 resdf, 列名分别为
+pdffile
+total_#_of_sheet1_term
+total_#_of_sheet2_term_in_sheet1_termfb10
+total_#_of_sheet2_term
+#_of_pdftext
 ```
 
 ```
-将 resdic 转dataframe , key 作为列名
+将 变量 pdf  ".pdf" 字符替换为 ".xlsx",保存到变量 xlsxfile 中,
+将 df1,与df2 用pandas库导出为 sheet1 与 sheet2 的不同页面的 xlsx 文件, 该文件名与所在目录为变量 xlsxfile 的值
 ```
 
-```
-创建变量 filen ,
-将 变量 pdf 的 ".pdf" 修改为 ".xlsx",保存到 变量filen中,
-将 df1,与df2 以 sheet1 还有sheet2的不同页面 
-保存到同一个名为变量 filen 的excel表格中,  
-```
+<br>
+
+> [!DANGER]
+> 下一步代码自动生成时总是会遗漏掉 文件保存操作, prompting 过程中需要检查代码完整性
 
 ```
 选中对 pdf 进行处理往后的代码进行封装,封装的时候,需要注意 chapGPT 有没有将保存的操作遗漏#end
-将这一段内容封装为   pdf_count 方法, 传入参数是 pdf, 返回值是 df_resdic
+修改代码, 将我选中的这一段内容封装为 pdf_count 方法, 传入参数是 pdf, 返回值是 resdf
 ```
 
 ```

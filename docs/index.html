@@ -31,7 +31,7 @@
     <a href="#/" id="projectname"></a>
     <a href="#/README.md"><i class="fa-solid fa-house"></i> 介绍</a>
     <a id='github_url'><i class="fa-brands fa-github"></i> GitHub</a>
-    <a id='icon_url'><i class="fa-solid fa-link"></i> fontawesome</a>
+    <!-- <a id='icon_url'><i class="fa-solid fa-link"></i> fontawesome</a> -->
     <!-- <a href="#/week/week1">/week/目录</a> -->
     <!-- <a href="#/week/week1">/week/目录</a> -->
     <!-- 注意这里的路径需要以#开头 -->
@@ -50,8 +50,8 @@
     document.getElementById('github_url').href = github_url
     document.title = long_name;
 
-    var icon_url = 'https://fontawesome.com/icons?d=gallery&m=free';
-    document.getElementById('icon_url').href = icon_url
+    // var icon_url = 'https://fontawesome.com/icons?d=gallery&m=free';
+    // document.getElementById('icon_url').href = icon_url
 
     function tocode(code) {
       code = code.trim();
@@ -161,7 +161,8 @@
     </div>
     <div
         style="font-size: 12px; 
-        width: 10%; 
+        width: 15%; 
+        min-width: atuo;
         height: auto; 
         padding: 5pt; 
         border-top-left-radius: 6px;
@@ -175,11 +176,12 @@
         justify-content: center;
         "
         onclick='copyText()'>
-        <button id = 'copycode'  class="fa-regular fa-clone fa-lg" style="color: #737578; " onclick='copyText()'></button><a> copy it</a>
+        <button id = 'copycode'  class="fa-regular fa-clone fa-lg" style="color: #737578; " onclick='copyText()'></button><a>&nbsp
+           copy it</a>
     </div>
     <div
         style="font-size: 12px; 
-        width:3%; 
+        width: 5%; 
         height: auto; 
         padding: 5pt; 
         background-color: #F6F8FA;
@@ -195,15 +197,18 @@
     </div>
     <div
         style="font-size: 12px; 
-        width: 82%; 
+        width: 75%; 
         height: auto; 
         padding: 5pt; 
         border-top-right-radius: 6px ;
         background-color: #F6F8FA;
         border: 1pt solid #c3c3c3; 
         border-left: 0pt solid  #c9c9c9;
+        display: flex; 
+        align-items: top; 
+        justify-content: left;
         ">
-        <a>step.${codenum}</a> ${comment} 
+        <a>step.${codenum}</a>&nbsp ${comment} 
     </div>
 </div>
 `
@@ -225,7 +230,7 @@
         style="font-size: 12px;
         line-height: 15pt;
         width: 95%; 
-        height: aut; 
+        height: auto; 
         padding: 10pt; 
         border-left: 1pt solid  #c3c3c3;
         border-right: 1pt solid #c3c3c3;
@@ -237,6 +242,7 @@
         ${text}
     </div>
 </div>
+
 
               `
               output = `
