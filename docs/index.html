@@ -65,11 +65,6 @@
     }
   </script>
   <script>
-    // mermaid
-    var num = 0;
-    // 计数器
-    var codenum = 0;
-    mermaid.initialize({ startOnLoad: false });
     //core
     window.$docsify = {
       // name: `<i class="fa-solid fa-code"></i> ${short_name}`,
@@ -93,56 +88,125 @@
         renderer: {
           code: function (code, lang) {
             if (lang === '') {
-
-              // 先判断变量 codenum 是否变量类型为字符串
-              if (typeof codenum == 'string') {
-                //再判断变量codenum 所有字符是否数字字符
-                if (codenum.match(/^\d+$/)) {
-                  // 将codenum 转换成数字
-                  codenum = parseInt(codenum)
-                } else {
-                  // 如果codenum 不是数字字符，那么将codenum 赋值为0
-                  codenum = 0;
-                }
+              return render_dim(code)
+            } else if (lang === 'drawio') {
+              return render_drawio(code)
+            } else if (lang === 'mermaid') {
+              return render_mermaid(code)
+            } else if (lang === 'pdf') {
+              code = tocode(code);
+              if (pdf_renderer(code, lang, true)) {
+                return pdf_renderer(code, lang, false);
               }
+            } else {
+              return this.origin.code.apply(this, arguments);
+            }
+          }
+        }
 
-              codenum += 1;
-              //将code 的所有\n 替换成<br>
-              var comment = '';
-              var text = '';
-              //使用用正则表达式匹配变量code #init 后面跟着0到3个数字
-              var reg = /#init\{(.*?)\}/;
-              if (reg.test(code)) {
-                // 将匹配到的结果取出来
-                codenum = code.match(reg)[1];
+      },
+      // <!-- 搜索框 -->
+      search: {
+        placeholder: {
+          '/': '全局搜索...'
+        },
+        depth: 3
+      },
+      auto2top: true,
+      topMargin: 90,
+      coverpage: true,
+      loadNavbar: true,
+      loadSidebar: true,
+      subMaxLevel: 3,
+      // <!-- 回到顶部 -->
+      scrollToTop: {
+        auto: true,
+        text: 'Top',
+        right: 15,
+        bottom: 15,
+        offset: 500
+      },
+      // 分页导航插件
+      pagination: {
+        previousText: '上一卷',
+        nextText: '下一卷',
+        crossChapter: true,
+        crossChapterText: true
+      },
+      //统计字数
+      count: {
+        countable: true,
+        fontsize: '0.9em',
+        color: 'rgb(90,90,90)',
+        language: 'chinese'
+      },
+    }
+  </script>
 
-                // 将匹配到的结果替换成空
-                code = code.replace(reg, '')
-              }
+  <script>
+    // 渲染 mermaid 代码块
+    var num = 0;
+    mermaid.initialize({ startOnLoad: false });
+    function render_mermaid(code) {
+      return (
+        '<div class="mermaid">' + mermaid.render('mermaid-svg-' + num++, code) + "</div>"
+      );
+    }
 
-              split_t = '#end'
-              code = code.trim("\n")
-              // 判断 #--# 是否在code 字符中
-              if (code.indexOf(split_t) != -1) {
-                // 说明有注释
-                comment = code.split(split_t)[0];
-                comment = comment.replace(/\n/g, '<br>')
+    // 计数器
+    var codenum = 0;
+    // 渲染不指语言的代码块
+    function render_dim(code) {
 
-                text = code.split(split_t)[1];
-                text = text.trim("\n")
-                text = text.replace(/\n/g, '<br>')
-              } else {
-                text = code.replace(/\n/g, '<br>')
-              }
-              var display = 'none'
-              var ishow = '0pt'
-              if (comment != "") {
-                display = 'block'
-                ishow = '0pt'
-              }
+      // 先判断变量 codenum 是否变量类型为字符串
+      if (typeof codenum == 'string') {
+        //再判断变量codenum 所有字符是否数字字符
+        if (codenum.match(/^\d+$/)) {
+          // 将codenum 转换成数字
+          codenum = parseInt(codenum)
+        } else {
+          // 如果codenum 不是数字字符，那么将codenum 赋值为0
+          codenum = 0;
+        }
+      }
+
+      codenum += 1;
+      //将code 的所有\n 替换成<br>
+      var comment = '';
+      var text = '';
+      //使用用正则表达式匹配变量code #init 后面跟着0到3个数字
+      var reg = /#init\{(.*?)\}/;
+      if (reg.test(code)) {
+        // 将匹配到的结果取出来
+        codenum = code.match(reg)[1];
+
+        // 将匹配到的结果替换成空
+        code = code.replace(reg, '')
+      }
+
+      split_t = '#end'
+      code = code.trim("\n")
+      // 判断 #--# 是否在code 字符中
+      if (code.indexOf(split_t) != -1) {
+        // 说明有注释
+        comment = code.split(split_t)[0];
+        comment = comment.replace(/\n/g, '<br>')
+
+        text = code.split(split_t)[1];
+        text = text.trim("\n")
+        text = text.replace(/\n/g, '<br>')
+      } else {
+        text = code.replace(/\n/g, '<br>')
+      }
+      var display = 'none'
+      var ishow = '0pt'
+      if (comment != "") {
+        display = 'block'
+        ishow = '0pt'
+      }
 
 
-              var commentcode = `
+      var commentcode = `
 <div style="display: flex;">
   <div style=" width: 5%; height: auto;  border: 0pt solid #fffff; border-radius: 10px; background-color: #FFFFFF; font-weight: none; display: flex; align-items: center; justify-content: center;">
     <div  style="width: 0.4mm;
@@ -213,7 +277,7 @@
 </div>
 `
 
-              var textcode = `
+      var textcode = `
 <div style="display: flex;">
   <div style=" width: 5%; border: 0pt solid #fffff; border-radius: 10px; background-color: #FFFFFF; font-weight: none; display: flex; align-items: top; justify-content: center;">
         <div
@@ -245,106 +309,81 @@
 
 
               `
-              output = `
+      output = `
 <div id = 'copyprompt'>
 ${commentcode}
 ${textcode}
 </div>
 `
-              return output
-            } else if (lang === 'drawio') {
-              if (window.drawioConverter) {
-                console.log('drawio 转化中')
-                console.log(code)
-                return window.drawioConverter(code)
-              } else {
-                return `<div class='drawio-code'>${code}</div>`
-              }
-              // mermaid
-            } else if (lang === 'mermaid') {
-              return (
-                '<div class="mermaid">' + mermaid.render('mermaid-svg-' + num++, code) + "</div>"
-              );
-            } else if (lang === 'pdf') {
-              code = tocode(code);
-              var pdf_renderer = function (code, lang, verify) {
-                function unique_id_generator() {
-                  function rand_gen() {
-                    return Math.floor((Math.random() + 1) * 65536).toString(16).substring(1);
-                  }
-                  return rand_gen() + rand_gen() + '-' + rand_gen() + '-' + rand_gen() + '-' + rand_gen() + '-' + rand_gen() + rand_gen() + rand_gen();
-                }
-                if (lang && !lang.localeCompare('pdf', 'en', { sensitivity: 'base' })) {
-                  if (verify) {
-                    return true;
-                  } else {
-                    var divId = "markdown_code_pdf_container_" + unique_id_generator().toString();
-                    var container_list = new Array();
-                    if (localStorage.getItem('pdf_container_list')) {
-                      container_list = JSON.parse(localStorage.getItem('pdf_container_list'));
-                    }
-                    container_list.push({ "pdf_location": code, "div_id": divId });
-                    localStorage.setItem('pdf_container_list', JSON.stringify(container_list));
-                    return (
-                      '<div style="margin-top:' + PDF_MARGIN_TOP + '; margin-bottom:' + PDF_MARGIN_BOTTOM + ';" id="' + divId + '">'
-                      + '<a href="' + code + '"> Link </a> to ' + code +
-                      '</div>'
-                    );
-                  }
-                }
-                return false;
-              }
-              if (pdf_renderer(code, lang, true)) {
-                return pdf_renderer(code, lang, false);
-              }
-            } else {
-              return this.origin.code.apply(this, arguments);
-            }
-          }
+      return output
+    };
+
+    // 渲染 drawio 代码块
+    function render_drawio(code) {
+      if (window.drawioConverter) {
+        return window.drawioConverter(code)
+      } else {
+        return `<div class='drawio-code'>${code}</div>`
+      }
+    }
+
+    // 渲染 pdf 代码块
+    function pdf_renderer(code, lang, verify) {
+      function unique_id_generator() {
+        function rand_gen() {
+          return Math.floor((Math.random() + 1) * 65536).toString(16).substring(1);
         }
-
-      },
-      // <!-- 搜索框 -->
-      search: {
-        placeholder: {
-          '/': '全局搜索...'
-        },
-        depth: 3
-      },
-      auto2top: true,
-      topMargin: 90,
-      coverpage: true,
-      loadNavbar: true,
-      loadSidebar: true,
-      subMaxLevel: 3, // 就是个参数
-      // <!-- 回到顶部 -->
-      scrollToTop: {
-        auto: true,
-        text: 'Top',
-        right: 15,
-        bottom: 15,
-        offset: 500
-      },
-      // 分页导航插件
-      pagination: {
-        previousText: '上一卷',
-        nextText: '下一卷',
-        crossChapter: true,
-        crossChapterText: true
-      },
-      //统计字数
-      count: {
-        countable: true,
-        fontsize: '0.9em',
-        color: 'rgb(90,90,90)',
-        language: 'chinese'
-      },
-
+        return rand_gen() + rand_gen() + '-' + rand_gen() + '-' + rand_gen() + '-' + rand_gen() + '-' + rand_gen() + rand_gen() + rand_gen();
+      }
+      if (lang && !lang.localeCompare('pdf', 'en', { sensitivity: 'base' })) {
+        if (verify) {
+          return true;
+        } else {
+          var divId = "markdown_code_pdf_container_" + unique_id_generator().toString();
+          var container_list = new Array();
+          if (localStorage.getItem('pdf_container_list')) {
+            container_list = JSON.parse(localStorage.getItem('pdf_container_list'));
+          }
+          container_list.push({ "pdf_location": code, "div_id": divId });
+          localStorage.setItem('pdf_container_list', JSON.stringify(container_list));
+          return (
+            '<br>'
+            + '<div id="pdf.js">'
+            + '<button id="showpdf" class="fa-solid fa-file-pdf fa-2xl" style="color: #737578;" onclick="showpdf()" ></button>'
+            + '<a id="showtxt" onclick="showpdf()">  点击预览pdf</a>'
+            + '<div style="margin-top:' + PDF_MARGIN_TOP + '; margin-bottom:' + PDF_MARGIN_BOTTOM + ';display:none;" id="' + divId + '">'
+            + '<a href="' + code + '"> Link </a> to ' + code
+            + '</div>'
+            + '</div><br>'
+          );
+        }
+      }
+      return false;
     }
   </script>
 
   <script>
 
+    function showpdf() {
+      var currentElement = document.elementFromPoint(event.clientX, event.clientY);
+      while (currentElement.id != 'pdf.js') {
+        currentElement = currentElement.parentNode;
+      }
+      // 获取 div.pdfobject-container 的display 属性值
+      var display = window.getComputedStyle(document.querySelector('div.pdfobject-container')).display;
+      if (display == 'block') {
+        document.querySelector('div.pdfobject-container').style.display = 'none';
+        document.querySelector('a#showtxt').innerText = '\t点击预览pdf';
+      } else {
+        document.querySelector('div.pdfobject-container').style.display = 'block';
+        document.querySelector('a#showtxt').innerText = '\t点击隐藏pdf';
+
+      }
+
+    }
+
+
+    // 点击复制代码
     function copyText() {
       var currentElement = document.elementFromPoint(event.clientX, event.clientY);
       while (currentElement.id != 'copyprompt') {

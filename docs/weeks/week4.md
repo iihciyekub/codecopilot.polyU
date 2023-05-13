@@ -28,8 +28,11 @@
 
 
 
-[filename](https://raw.githubusercontent.com/iihciyekub/codecopilot.polyU/main/docs/drawio/dataFL1.drawio ':include :type=xml')
+<!-- [filename](https://raw.githubusercontent.com/iihciyekub/codecopilot.polyU/main/docs/drawio/dataFL1.drawio ':include :type=xml') -->
 
+```pdf
+https://github.com/iihciyekub/codecopilot.polyU/blob/main/docs/pdf/dataFL1.pdf
+```
 
 
 > [!TIP]  1) 读取 wroding
@@ -135,6 +138,5 @@ total_#_of_sheet2_term
 ```
 遍历所有pdflist 执行pdf_count 方法, 将所有返回值存在 alldf 数组中, 通过 pasndas concat 输出结果
 ```
-
 
 
